@@ -1,8 +1,35 @@
 const arrowLeft = document.querySelector(".arrow-left");
 const arrowRight = document.querySelector(".arrow-right");
 const slides = document.querySelectorAll(".slider-image");
+const сircles = document.getElementById("сircles");
 
 let currentSlideIndex = 0;
+const paginationCircles = [];
+
+function createPaginationCircle() {
+    const div = document.createElement("div");
+    div.className = "pagination-circle";
+    сircles.appendChild(div);
+    paginationCircles.push(div);
+}
+
+function addPagination() {
+    slides.forEach(createPaginationCircle);
+    paginationCircles[0].classList.add("active");
+    paginationCircles.forEach((circle, index) => {
+        circle.addEventListener("click", () => changeSlide(index));
+    });
+}
+
+
+function addActiveCircle() {
+    paginationCircles[currentSlideIndex].classList.add("active");
+}
+
+function removeActiveCircle() {
+    paginationCircles[currentSlideIndex].classList.remove("active");
+}
+
 
 function showSlide() {
     slides[currentSlideIndex].classList.add("selected");
@@ -14,7 +41,9 @@ function hideSlide() {
 
 function changeSlide(slideIndex) {
     hideSlide();
+    removeActiveCircle();
     currentSlideIndex = slideIndex;
+    addActiveCircle();
     showSlide();
 }
 
@@ -34,5 +63,6 @@ function previousSlide() {
     changeSlide(newSlideIndex);
 }
 
+addPagination();
 arrowLeft.addEventListener("click", previousSlide);
 arrowRight.addEventListener("click", nextSlide);
