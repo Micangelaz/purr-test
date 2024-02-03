@@ -4,6 +4,7 @@ const slides = document.querySelectorAll(".slider-image");
 const сircles = document.getElementById("сircles");
 
 let currentSlideIndex = 0;
+let isAnimation = false;
 const paginationCircles = [];
 
 function createPaginationCircle() {
@@ -30,36 +31,44 @@ function removeActiveCircle() {
 }
 
 function showSlide() {
+    isAnimation = true;
     slides[currentSlideIndex].classList.add("selected");
     slides[currentSlideIndex].style.opacity = 0.25;
     let opacity = 0.25;
 
     const showImage = setInterval(() => {
-        opacity += 0.05;
+        opacity += 0.05; 
         slides[currentSlideIndex].style.opacity = opacity;
 
         if (opacity >= 1) {
             clearInterval(showImage);
+            isAnimation = false;
         }
     }, 25);
 }
 
 function hideSlide() {
+    isAnimation = true;
     slides[currentSlideIndex].classList.remove("selected");
     slides[currentSlideIndex].style.opacity = 0.75;
     let opacity = 0.75;
 
     const hideImage = setInterval(() => {
-        opacity -= 0.05;
+        opacity -= 0.05; 
         slides[currentSlideIndex].style.opacity = opacity;
 
         if (opacity <= 0) {
             clearInterval(hideImage);
+            isAnimation = false;
         }
     }, 25);
 }
 
 function changeSlide(slideIndex) {
+    if (isAnimation) {
+        return;
+    }
+
     hideSlide();
     removeActiveCircle();
     currentSlideIndex = slideIndex;
